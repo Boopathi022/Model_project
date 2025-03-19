@@ -12,6 +12,8 @@
         .pay-button { background: green; color: white; padding: 10px; border: none; cursor: pointer; }
         button { padding: 8px; margin-top: 5px; }
         .qr-code img { width: 200px; margin-top: 10px; }
+        .address-form { margin-top: 20px; text-align: left; display: inline-block; }
+        .address-form input, .address-form textarea { width: 100%; padding: 5px; margin: 5px 0; }
     </style>
 </head>
 <body>
@@ -72,7 +74,16 @@
         <ul id="cart-items"></ul>
         <p>Total: ₹<span id="total">0</span></p>
         <button onclick="clearCart()">Clear Cart</button>
-        <br><br>
+
+        <!-- Address Form -->
+        <div class="address-form">
+            <h2>Enter Your Details</h2>
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="phone" placeholder="Phone Number" required>
+            <textarea id="address" placeholder="Enter your address" rows="3" required></textarea>
+        </div>
+
+        <br>
         <button class="pay-button" onclick="payWithGPay()">Pay with GPay</button>
 
         <!-- QR Code for UPI Payment -->
@@ -105,15 +116,32 @@
                 alert("Your cart is empty!");
                 return;
             }
-            let upiID = "mahendraboopathi022-2@okicici"; // Your UPI ID
+
+            let name = document.getElementById("name").value.trim();
+            let phone = document.getElementById("phone").value.trim();
+            let address = document.getElementById("address").value.trim();
+
+            if (name === "" || phone === "" || address === "") {
+                alert("Please fill in all address details.");
+                return;
+            }
+
+            let upiID = "mahendraboopathi022-2@okicici";
             let url = `upi://pay?pa=${upiID}&pn=Your%20Store&tn=Payment%20for%20Cart&am=${total}&cu=INR`;
             window.location.href = url;
 
-            // Send order details via email using Google Apps Script
+            // Collect order details
             let cartItems = document.getElementById("cart-items").innerText;
-            let data = { cart_details: cartItems, total_amount: total };
+            let data = {
+                name: name,
+                phone: phone,
+                address: address,
+                cart_details: cartItems,
+                total_amount: total
+            };
 
-            fetch("https://script.google.com/macros/s/AKfycbw58UbBgLMI9Gb2a1enMIJi7qCSQGZOHL71xmUwXX0y2thZZlf4xV3Z6NYFQw6Dpa9c/exec", {
+            // Send order details to Gmail via Google Apps Script
+            fetch("https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: { "Content-Type": "application/json" }
@@ -123,4 +151,3 @@
 
 </body>
 </html>
-            
