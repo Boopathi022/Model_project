@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPCOE Online Store</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .product { border: 1px solid #ddd; padding: 10px; display: inline-block; margin: 10px; width: 200px; }
+        .product img { width: 100%; height: auto; }
+        .cart { margin-top: 20px; font-weight: bold; }
+        .pay-button { background: green; color: white; padding: 10px; border: none; cursor: pointer; }
+        button { padding: 8px; margin-top: 5px; }
+        .qr-code img { width: 200px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>JPCOE Online Store</h1>
+
+    <div class="product">
+        <img src="https://i.imgur.com/kjsyt4k.jpeg" alt="Stylish Bag">
+        <h2>Stylish Bag</h2>
+        <p>Price: ₹400</p>
+        <button onclick="addToCart('Stylish Bag', 400)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://i.imgur.com/ubE2uuw.jpeg" alt="White Bag">
+        <h2>White Bag</h2>
+        <p>Price: ₹500</p>
+        <button onclick="addToCart('White Bag', 500)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://i.imgur.com/Zs5fphP.jpeg" alt="Navy Blue Blazer">
+        <h2>Navy Blue Blazer</h2>
+        <p>Price: ₹700</p>
+        <button onclick="addToCart('Navy Blue Blazer', 700)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://i.imgur.com/n86QaBI.jpeg" alt="Dog Tag Pendant Chain">
+        <h2>Dog Tag Pendant Chain</h2>
+        <p>Price: ₹100</p>
+        <button onclick="addToCart('Dog Tag Pendant Chain', 100)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://i.imgur.com/T9Qg2Ln.jpeg" alt="Red Shoe">
+        <h2>Red Shoe</h2>
+        <p>Price: ₹400</p>
+        <button onclick="addToCart('Red Shoe', 400)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://i.imgur.com/tM9E2bU.jpeg" alt="Formal Watch">
+        <h2>Formal Watch</h2>
+        <p>Price: ₹450</p>
+        <button onclick="addToCart('Formal Watch', 450)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://i.imgur.com/sy5UI8I.jpeg" alt="Test here">
+        <h2>Test here</h2>
+        <p>Price: ₹1</p>
+        <button onclick="addToCart('Test here', 1)">Add to Cart</button>
+    </div>
+
+    <div class="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: ₹<span id="total">0</span></p>
+        <button onclick="clearCart()">Clear Cart</button>
+        <br><br>
+        <button class="pay-button" onclick="payWithGPay()">Pay with GPay</button>
+
+        <!-- QR Code for UPI Payment -->
+        <div class="qr-code">
+            <img src="https://i.imgur.com/2sgXWQ1.jpeg" alt="UPI QR Code">
+        </div>
+    </div>
+
+    <script>
+        let total = 0;
+        function addToCart(name, price) {
+            let list = document.getElementById("cart-items");
+            let item = document.createElement("li");
+            item.textContent = `${name} - ₹${price}`;
+            list.appendChild(item);
+            total += price;
+            document.getElementById("total").textContent = total;
+        }
+
+        function clearCart() {
+            if (confirm("Are you sure you want to clear the cart?")) {
+                document.getElementById("cart-items").innerHTML = "";
+                total = 0;
+                document.getElementById("total").textContent = total;
+            }
+        }
+
+        function payWithGPay() {
+            if (total === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            let upiID = "mahendraboopathi022-2@okicici"; // Your UPI ID
+            let url = `upi://pay?pa=${upiID}&pn=Your%20Store&tn=Payment%20for%20Cart&am=${total}&cu=INR`;
+            window.location.href = url;
+
+            // Send order details via email using Google Apps Script
+            let cartItems = document.getElementById("cart-items").innerText;
+            let data = { cart_details: cartItems, total_amount: total };
+
+            fetch("https://script.google.com/macros/s/AKfycbw58UbBgLMI9Gb2a1enMIJi7qCSQGZOHL71xmUwXX0y2thZZlf4xV3Z6NYFQw6Dpa9c/exec", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { "Content-Type": "application/json" }
+            });
+        }
+    </script>
+
+</body>
+</html>
