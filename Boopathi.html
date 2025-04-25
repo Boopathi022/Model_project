@@ -3,121 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPCOE Online Store</title>
+    <title>JPCOE Course Enrollment</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
-        .product { border: 1px solid #ddd; padding: 10px; display: inline-block; margin: 10px; width: 200px; }
-        .product img { width: 100%; height: auto; }
-        .cart { margin-top: 20px; font-weight: bold; }
+        .container { display: none; } /* Hide course selection until user enters details */
+        .form-container { text-align: left; display: inline-block; margin-top: 20px; }
+        .form-container input { width: 100%; padding: 5px; margin: 5px 0; }
+        .course { border: 1px solid #ddd; padding: 10px; display: inline-block; margin: 10px; width: 250px; }
+        .course img { width: 100%; height: auto; }
         .pay-button { background: green; color: white; padding: 10px; border: none; cursor: pointer; }
-        button { padding: 8px; margin-top: 5px; }
         .qr-code img { width: 200px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <h1>JPCOE Online Store</h1>
+    <h1>Welcome to JPCOE Course Enrollment</h1>
 
-    <div class="product">
-        <img src="https://i.imgur.com/kjsyt4k.jpeg" alt="Stylish Bag">
-        <h2>Stylish Bag</h2>
-        <p>Price: ₹400</p>
-        <button onclick="addToCart('Stylish Bag', 400)">Add to Cart</button>
+    <!-- User Details Form -->
+    <div class="form-container" id="user-form">
+        <h2>Enter Your Details</h2>
+        <input type="text" id="firstName" placeholder="First Name" required>
+        <input type="text" id="lastName" placeholder="Last Name" required>
+        <input type="text" id="registerNumber" placeholder="Register Number" required>
+        <input type="text" id="department" placeholder="Department" required>
+        <input type="text" id="collegeName" placeholder="College Name" required>
+        <input type="text" id="mobile" placeholder="Mobile Number" required>
+        <input type="email" id="email" placeholder="E-mail ID" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="text" id="otherInfo" placeholder="Other Information (Optional)">
+        <button onclick="submitDetails()">Proceed</button>
     </div>
 
-    <div class="product">
-        <img src="https://i.imgur.com/ubE2uuw.jpeg" alt="White Bag">
-        <h2>White Bag</h2>
-        <p>Price: ₹500</p>
-        <button onclick="addToCart('White Bag', 500)">Add to Cart</button>
-    </div>
+    <!-- Course Selection (Hidden Initially) -->
+    <div class="container" id="course-container">
+        <h2>Select a Course</h2>
 
-    <div class="product">
-        <img src="https://i.imgur.com/Zs5fphP.jpeg" alt="Navy Blue Blazer">
-        <h2>Navy Blue Blazer</h2>
-        <p>Price: ₹700</p>
-        <button onclick="addToCart('Navy Blue Blazer', 700)">Add to Cart</button>
-    </div>
+        <div class="course">
+            <img src="https://i.imgur.com/s47LdRL.jpeg" alt="Web Development">
+            <h2>Web Development</h2>
+            <p>Price: ₹250</p>
+            <button onclick="selectCourse('Web Development', 250)">Enroll Now</button>
+        </div>
 
-    <div class="product">
-        <img src="https://i.imgur.com/n86QaBI.jpeg" alt="Dog Tag Pendant Chain">
-        <h2>Dog Tag Pendant Chain</h2>
-        <p>Price: ₹100</p>
-        <button onclick="addToCart('Dog Tag Pendant Chain', 100)">Add to Cart</button>
-    </div>
+        <div class="course">
+            <img src="https://i.imgur.com/hx8QDMW.jpeg" alt="Full Stack Development">
+            <h2>Full Stack Development</h2>
+            <p>Price: ₹500</p>
+            <button onclick="selectCourse('Full Stack Development', 500)">Enroll Now</button>
+        </div>
 
-    <div class="product">
-        <img src="https://i.imgur.com/T9Qg2Ln.jpeg" alt="Red Shoe">
-        <h2>Red Shoe</h2>
-        <p>Price: ₹400</p>
-        <button onclick="addToCart('Red Shoe', 400)">Add to Cart</button>
-    </div>
+        <div class="course">
+            <img src="https://i.imgur.com/dIcJdRl.jpeg" alt="Front End Development">
+            <h2>Front End Development</h2>
+            <p>Price: ₹200</p>
+            <button onclick="selectCourse('Front End Development', 200)">Enroll Now</button>
+        </div>
 
-    <div class="product">
-        <img src="https://i.imgur.com/tM9E2bU.jpeg" alt="Formal Watch">
-        <h2>Formal Watch</h2>
-        <p>Price: ₹450</p>
-        <button onclick="addToCart('Formal Watch', 450)">Add to Cart</button>
-    </div>
+        <div class="course">
+            <img src="https://i.imgur.com/Rp6R8cb.jpeg" alt="Backend Development">
+            <h2>Backend Development</h2>
+            <p>Price: ₹200</p>
+            <button onclick="selectCourse('Backend Development', 200)">Enroll Now</button>
+        </div>
 
-    <div class="product">
-        <img src="https://i.imgur.com/sy5UI8I.jpeg" alt="Test here">
-        <h2>Test here</h2>
-        <p>Price: ₹1</p>
-        <button onclick="addToCart('Test here', 1)">Add to Cart</button>
-    </div>
+        <div class="course">
+            <img src="https://i.imgur.com/it998Ic.jpeg" alt="Communication Skill">
+            <h2>Communication Skill</h2>
+            <p>Price: ₹1</p>
+            <button onclick="selectCourse('Communication Skill', 1)">Enroll Now</button>
+        </div>
 
-    <div class="cart">
-        <h2>Cart</h2>
-        <ul id="cart-items"></ul>
-        <p>Total: ₹<span id="total">0</span></p>
-        <button onclick="clearCart()">Clear Cart</button>
-        <br><br>
+        <div>
+            <h2>Selected Course: <span id="selected-course">None</span></h2>
+            <p>Total Price: ₹<span id="total-price">0</span></p>
+        </div>
+
         <button class="pay-button" onclick="payWithGPay()">Pay with GPay</button>
 
-        <!-- QR Code for UPI Payment -->
+        <!-- QR Code for Payment -->
         <div class="qr-code">
             <img src="https://i.imgur.com/2sgXWQ1.jpeg" alt="UPI QR Code">
         </div>
     </div>
 
     <script>
-        let total = 0;
-        function addToCart(name, price) {
-            let list = document.getElementById("cart-items");
-            let item = document.createElement("li");
-            item.textContent = `${name} - ₹${price}`;
-            list.appendChild(item);
-            total += price;
-            document.getElementById("total").textContent = total;
+        let userDetails = {};
+        let selectedCourse = "";
+        let totalPrice = 0;
+
+        function submitDetails() {
+            userDetails = {
+                firstName: document.getElementById("firstName").value.trim(),
+                lastName: document.getElementById("lastName").value.trim(),
+                registerNumber: document.getElementById("registerNumber").value.trim(),
+                department: document.getElementById("department").value.trim(),
+                collegeName: document.getElementById("collegeName").value.trim(),
+                mobile: document.getElementById("mobile").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                password: document.getElementById("password").value.trim(),
+                otherInfo: document.getElementById("otherInfo").value.trim()
+            };
+
+            // Validate Required Fields
+            for (let key in userDetails) {
+                if (key !== "otherInfo" && userDetails[key] === "") {
+                    alert("Please fill in all required fields.");
+                    return;
+                }
+            }
+
+            // Show Course Selection & Hide Form
+            document.getElementById("user-form").style.display = "none";
+            document.getElementById("course-container").style.display = "block";
         }
 
-        function clearCart() {
-            if (confirm("Are you sure you want to clear the cart?")) {
-                document.getElementById("cart-items").innerHTML = "";
-                total = 0;
-                document.getElementById("total").textContent = total;
-            }
+        function selectCourse(course, price) {
+            selectedCourse = course;
+            totalPrice = price;
+
+            document.getElementById("selected-course").textContent = course;
+            document.getElementById("total-price").textContent = price;
         }
 
         function payWithGPay() {
-            if (total === 0) {
-                alert("Your cart is empty!");
+            if (selectedCourse === "") {
+                alert("Please select a course first!");
                 return;
             }
-            let upiID = "mahendraboopathi022-2@okicici"; // Your UPI ID
-            let url = `upi://pay?pa=${upiID}&pn=Your%20Store&tn=Payment%20for%20Cart&am=${total}&cu=INR`;
-            window.location.href = url;
 
-            // Send order details via email using Google Apps Script
-            let cartItems = document.getElementById("cart-items").innerText;
-            let data = { cart_details: cartItems, total_amount: total };
+            let upiID = "mahendraboopathi022-2@okicici";
+            let url = `upi://pay?pa=${upiID}&pn=JPCOE%20Courses&tn=Payment%20for%20${encodeURIComponent(selectedCourse)}&am=${totalPrice}&cu=INR`;
+            window.open(url, "_blank");
 
-            fetch("https://script.google.com/macros/s/AKfycbw58UbBgLMI9Gb2a1enMIJi7qCSQGZOHL71xmUwXX0y2thZZlf4xV3Z6NYFQw6Dpa9c/exec", {
+            // Send order details via Google Apps Script
+            let orderDetails = {
+                ...userDetails,
+                selectedCourse: selectedCourse,
+                price: totalPrice
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbxnWqst0ZY5P5uqYQ-HmOJVpGBy1KcKMVJSUosGRb0V2rqIRBljBCI1Sn-nissw44NQ/exec", {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify(orderDetails),
                 headers: { "Content-Type": "application/json" }
-            });
+            }).then(response => response.json())
+              .then(data => console.log(data))
+              .catch(error => console.error("Error:", error));
         }
     </script>
 
